@@ -1,11 +1,33 @@
-import { createContext, useContext } from "react";
-import { IUserContext, IUserProvider } from "../types/contextTypes";
+import { createContext, useContext, useEffect, useState } from "react";
+import { IRole, IUserContext, IUserProvider } from "../types/contextTypes";
 
 const userContext = createContext<IUserContext | undefined>(undefined)
 
 function UserProvider({children}: IUserProvider): JSX.Element {
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(!!localStorage.getItem("isLoggedIn"))
+    const [role, setRole] = useState<IRole>(undefined)
+    const firstname = "Marlon"
+    const lastname = "Maxwell"
+
+    const exported = {
+        isLoggedIn,
+        setIsLoggedIn,
+        role,
+        setRole,
+        firstname,
+        lastname
+    }
+
+    useEffect(() => {
+        const role = localStorage.getItem("role")
+
+        if (role === "reader" || role === "librarian") {
+            setRole(role)
+        }
+    }, [])
+
     return (
-        <userContext.Provider value={{}}>
+        <userContext.Provider value={exported}>
             {children}
         </userContext.Provider>
     )
