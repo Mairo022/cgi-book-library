@@ -1,0 +1,39 @@
+.table {
+  display: flex;
+  flex-flow: column wrap;
+  align-items: center;
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+  text-align: center;
+
+  &__headers {
+    & > * {
+      width: 200px;
+    }
+  }
+
+  &__row {
+    &:hover {
+      cursor: pointer;
+      background-color: #e7e7e7;
+    }
+    &__item {
+
+      & > * {
+        display: inline-block;
+        width: 200px;
+      }
+    }
+  }
+
+  &__nav {
+    &__pages__page--active {
+      background-color: #5dbdcb;
+    }
+  }
+}
+
+.table__rows__row__item {
+
+}
