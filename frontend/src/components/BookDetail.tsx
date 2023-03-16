@@ -1,12 +1,13 @@
 import { useLocation } from 'react-router-dom';
 import { ChangeEvent, useEffect, useState } from "react";
-import { getBook, saveBook } from "../services/bookService";
+import { deleteBook, getBook, saveBook } from "../services/bookService";
 import { IBook, IBookStatus } from "../types/book";
 import BookCheckoutDialogue from "./BookCheckoutDialogue";
 import { useUserDetails } from "../context/userContext";
 import React from 'react';
 import { IFavouriteBooks } from "../types/contextTypes";
 import { STATUSES } from "../utils/statuses";
+import BookDeleteDialogue from "./BookDeleteDialogue";
 
 function BookDetail(): JSX.Element {
     const [book, setBook] = useState<IBook>()
@@ -15,6 +16,7 @@ function BookDetail(): JSX.Element {
     const bookId: string = location.pathname.split("/books/")[1]
 
     const [showCheckoutDialogue, setShowCheckoutDialogue] = useState(false)
+    const [showDeleteDialogue, setShowDeleteDialogue] = useState(false)
 
     function loadBook(bookId: string): void {
         getBook(bookId)
@@ -110,6 +112,10 @@ function BookDetail(): JSX.Element {
             return <></>
         }
 
+        const deleteBookButton: JSX.Element = role === "librarian" && book.status !== "BORROWED"
+                                              ? <button onClick={() => {setShowDeleteDialogue(true)}}>Delete Book</button>
+                                              : <></>
+
         return (
             <section className="book">
                 <h4 className="book__title">{book.title}</h4>
@@ -119,6 +125,7 @@ function BookDetail(): JSX.Element {
                 {bookStatus}
                 {checkoutButton}
                 {favouriteButton()}
+                {deleteBookButton}
             </section>
         )
     }
@@ -130,6 +137,7 @@ function BookDetail(): JSX.Element {
 
     return book
            ? <>
+               <BookDeleteDialogue book={book} open={showDeleteDialogue} setOpen={setShowDeleteDialogue}/>
                <BookCheckoutDialogue book={book} open={showCheckoutDialogue} setOpen={setShowCheckoutDialogue}/>
                {bookJSX()}
             </>
