@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { IRole, IUserContext, IUserProvider } from "../types/contextTypes";
+import { IFavouriteBooks, IRole, IUserContext, IUserProvider } from "../types/contextTypes";
 
 const userContext = createContext<IUserContext | undefined>(undefined)
 
@@ -9,20 +9,29 @@ function UserProvider({children}: IUserProvider): JSX.Element {
     const firstname = "Marlon"
     const lastname = "Maxwell"
 
-    const exported = {
+    const [favouriteBooks, setFavouriteBooks] = useState<IFavouriteBooks>([])
+
+    const exported: IUserContext = {
         isLoggedIn,
         setIsLoggedIn,
         role,
         setRole,
         firstname,
-        lastname
+        lastname,
+        favouriteBooks,
+        setFavouriteBooks
     }
 
     useEffect(() => {
+        const favourites = localStorage.getItem("favourites")
         const role = localStorage.getItem("role")
 
         if (role === "reader" || role === "librarian") {
             setRole(role)
+        }
+
+        if (favourites) {
+            setFavouriteBooks(JSON.parse(favourites))
         }
     }, [])
 

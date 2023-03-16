@@ -1,13 +1,16 @@
 import { useLocation } from 'react-router-dom';
-import { useEffect, useState } from "react";
-import { getBook } from "../services/bookService";
-import { IBook } from "../types/book";
+import { ChangeEvent, useEffect, useState } from "react";
+import { getBook, saveBook } from "../services/bookService";
+import { IBook, IBookStatus } from "../types/book";
 import BookCheckoutDialogue from "./BookCheckoutDialogue";
 import { useUserDetails } from "../context/userContext";
+import React from 'react';
+import { IFavouriteBooks } from "../types/contextTypes";
+import { STATUSES } from "../utils/statuses";
 
 function BookDetail(): JSX.Element {
     const [book, setBook] = useState<IBook>()
-    const {role} = useUserDetails()
+    const {role, favouriteBooks, setFavouriteBooks} = useUserDetails()
     const location = useLocation()
     const bookId: string = location.pathname.split("/books/")[1]
 
@@ -20,12 +23,86 @@ function BookDetail(): JSX.Element {
             })
     }
 
+    function onSelectionChange(e: ChangeEvent<HTMLSelectElement>) {
+        const status = e.target.value as IBookStatus
+
+        if (!STATUSES.includes(status) || !book) return
+
+        const bookData: IBook = {...book, status}
+        saveBook(bookData)
+    }
+
+    function onFavouriting(action: "ADD" | "REMOVE"): void {
+        if (action === "ADD") {
+            const favourites: IFavouriteBooks = [...favouriteBooks, String(book!.id)]
+
+            localStorage.setItem("favourites", JSON.stringify(favourites))
+            setFavouriteBooks(favourites)
+        }
+        if (action === "REMOVE") {
+            const favourites: IFavouriteBooks = favouriteBooks.filter(id => id !== book!.id)
+
+            localStorage.setItem("favourites", JSON.stringify(favourites))
+            setFavouriteBooks(favourites)
+        }
+    }
+
     function bookJSX(): JSX.Element {
         if (!book) return <></>
 
-        const checkoutButton = book.status!== "BORROWED" && (role === "reader" || role === "librarian")
-                               ? <button onClick={() => { setShowCheckoutDialogue(true) }}>Checkout</button>
-                               : <></>
+        const isBookInFavourites = favouriteBooks?.includes(book.id)
+
+        const selectOptions = STATUSES.map((status, i) => {
+            const statusTitleCase: string = status.charAt(0) + status.slice(1).toLowerCase()
+
+            if (i === 0) {
+                if (status !== book.status) {
+                    return (
+                        <React.Fragment key={i}>
+                            <option className="book__status__select__option" value={book.status}>
+                                {
+                                    book.status.charAt(0) + book.status.slice(1).toLowerCase()
+                                }
+                            </option>
+                            <option className="book__status__select__option" value={status}>
+                                {statusTitleCase}
+                            </option>
+                        </React.Fragment>
+                    )
+                }
+                return (
+                    <option className="book__status__select__option" value={status} key={i}>
+                        {statusTitleCase}
+                    </option>
+                )
+            }
+            if (status === book.status) {
+                return <React.Fragment key={i}/>
+            }
+
+            return (
+                <option className="book__status__select__option" value={status} key={i}>
+                    {statusTitleCase}
+                </option>
+            )
+        })
+
+        const bookStatus: JSX.Element = role === "librarian" && book.status !== "BORROWED"
+                                        ? <div className="book__status">
+                                            <label htmlFor="statuses">Status: </label>
+                                            <select className="book__status__select" name="statuses" onChange={onSelectionChange}>
+                                                {selectOptions}
+                                            </select>
+                                          </div>
+                                        : <p className="book__status">Status: {book.status}</p>
+
+        const checkoutButton: JSX.Element = book.status!== "BORROWED" && (role === "reader" || role === "librarian")
+                                            ? <button onClick={() => {setShowCheckoutDialogue(true)}}>Checkout</button>
+                                            : <></>
+
+        const favouriteButton: JSX.Element = role === "reader" && isBookInFavourites
+                                             ? <button onClick={() => {onFavouriting("REMOVE")}}>Unfavourite</button>
+                                             : <button onClick={() => {onFavouriting("ADD")}}>Favourite</button>
 
         return (
             <section className="book">
@@ -33,8 +110,9 @@ function BookDetail(): JSX.Element {
                 <p className="book__author">by {book.author}</p>
                 <p className="book__genre">Genre: {book.genre}</p>
                 <p className="book__added">Released: {book.year}</p>
-                <p className="book__status">Status: {book.status}</p>
+                {bookStatus}
                 {checkoutButton}
+                {favouriteButton}
             </section>
         )
     }
