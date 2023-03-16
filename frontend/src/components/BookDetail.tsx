@@ -55,6 +55,7 @@ function BookDetail(): JSX.Element {
         const selectOptions = STATUSES.map((status, i) => {
             const statusTitleCase: string = status.charAt(0) + status.slice(1).toLowerCase()
 
+            // Ensures the first option is book.status
             if (i === 0) {
                 if (status !== book.status) {
                     return (
@@ -100,9 +101,14 @@ function BookDetail(): JSX.Element {
                                             ? <button onClick={() => {setShowCheckoutDialogue(true)}}>Checkout</button>
                                             : <></>
 
-        const favouriteButton: JSX.Element = role === "reader" && isBookInFavourites
-                                             ? <button onClick={() => {onFavouriting("REMOVE")}}>Unfavourite</button>
-                                             : <button onClick={() => {onFavouriting("ADD")}}>Favourite</button>
+        const favouriteButton = (): JSX.Element => {
+            if (role === "reader") {
+                return isBookInFavourites
+                       ? <button onClick={() => {onFavouriting("REMOVE")}}>Unfavourite</button>
+                       : <button onClick={() => {onFavouriting("ADD")}}>Favourite</button>
+            }
+            return <></>
+        }
 
         return (
             <section className="book">
@@ -112,7 +118,7 @@ function BookDetail(): JSX.Element {
                 <p className="book__added">Released: {book.year}</p>
                 {bookStatus}
                 {checkoutButton}
-                {favouriteButton}
+                {favouriteButton()}
             </section>
         )
     }
