@@ -1,17 +1,25 @@
-import { useEffect, useState } from "react";
+import { FormEvent, SyntheticEvent, useEffect, useState } from "react";
 import { getBooks } from "../services/bookService";
-import { IBook } from "../types/book";
-import { IPage, IPageRequest, ISortDirection } from "../types/page";
+import { IBook, IBookStatus } from "../types/book";
+import { IFilterParams, IPage, ISortDirection } from "../types/page";
 import { NavLink } from "react-router-dom";
 import "../styles/table.scss"
 import generatePages from "../utils/pagination";
+import { STATUSES } from "../utils/statuses";
+import { toTitleCase } from "../utils/toTitleCase";
 
 function BooksList(): JSX.Element {
     const [books, setBooks] = useState<IPage<IBook>>()
-    const [filter, setFilter] = useState<Partial<IPageRequest>>({pageIndex: 0, pageSize: 5, sort: "title", direction: "asc"})
+    const [filter, setFilter] = useState<Partial<IFilterParams>>({pageIndex: 0, pageSize: 5, sort: "title", direction: "asc"})
     const [dataLoadError, setDataLoadError] = useState<boolean>(false)
 
-    function loadBooks(filter: Partial<IPageRequest>): void {
+    const [title, setTitle] = useState<string>("")
+    const [author, setAuthor] = useState<string>("")
+    const [year, setYear] = useState<number>()
+    const [genre, setGenre] = useState<string>("")
+    const [status, setStatus] = useState<IBookStatus | "">("")
+
+    function loadBooks(filter: Partial<IFilterParams>): void {
         getBooks(filter)
             .then(r => {
                 setBooks(r.data)
@@ -35,6 +43,36 @@ function BooksList(): JSX.Element {
             }
         }
         setFilter((filter => ({...filter, sort, direction, pageIndex: 0})))
+    }
+
+    function onSearchSubmit(e: FormEvent<HTMLFormElement>): void {
+        e.preventDefault()
+        setFilter({...filter, pageIndex: 0, title, author, genre, year, status})
+    }
+
+    function searchJSX(): JSX.Element {
+        const options = STATUSES.map((status, i) =>
+                <option value={status} key={i}>{toTitleCase(status)}</option>)
+
+        return (
+            <div className="books__search">
+                <form className="books__search__form" onSubmit={onSearchSubmit}>
+                    <label htmlFor="title">Title</label>
+                    <input type="text" value={title} name="title" onChange={e => {setTitle(e.target.value)}}/>
+                    <label htmlFor="author">Author</label>
+                    <input type="text" value={author} name="author" onChange={e => {setAuthor(e.target.value)}}/>
+                    <label htmlFor="year">Year</label>
+                    <input type="number" value={year} name="year" onChange={e => {setYear(parseInt(e.target.value))}}/>
+                    <label htmlFor="genre">Genre</label>
+                    <input type="text" value={genre} name="title" onChange={e => {setGenre(e.target.value)}}/>
+                    <select onChange={e => {setStatus(e.target.value as IBookStatus)}}>
+                        <option value="">All</option>
+                        {options}
+                    </select>
+                    <button type="submit">Search</button>
+                </form>
+            </div>
+        )
     }
 
     function headersJSX(): JSX.Element {
@@ -120,17 +158,20 @@ function BooksList(): JSX.Element {
     }, [filter])
 
     return books && books.content ?
-           <article className="table books_list">
-               <header className="table__headers">
-                   {headersJSX()}
-               </header>
-               <ul className="table__rows">
-                   {booksJSX()}
-               </ul>
-               <nav className="table__nav">
-                   {navPagesJSX()}
-               </nav>
-           </article>
+           <>
+               {searchJSX()}
+               <article className="table books_list">
+                   <header className="table__headers">
+                       {headersJSX()}
+                   </header>
+                   <ul className="table__rows">
+                       {booksJSX()}
+                   </ul>
+                   <nav className="table__nav">
+                       {navPagesJSX()}
+                   </nav>
+               </article>
+           </>
            : dataLoadError ?
              <div className="error_loading">
                <p className="error_loading__text">Error loading books,</p>

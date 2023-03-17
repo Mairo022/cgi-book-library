@@ -1,11 +1,11 @@
 import axios, { AxiosPromise } from "axios";
 import buildFilterParams from "./restUtil";
-import { IPage, IPageRequest } from "../types/page";
+import { IFilterParams, IPage, IPageRequest } from "../types/page";
 import { IBook } from "../types/book";
 
 const baseUrl = `http://localhost:8080/api/book`
 
-function getBooks(filter: Partial<IPageRequest>): AxiosPromise<IPage<IBook>> {
+function getBooks(filter: Partial<IFilterParams>): AxiosPromise<IPage<IBook>> {
     const url = baseUrl + '/getBooks'
     const params = buildFilterParams(filter)
     return axios.get(url + params)

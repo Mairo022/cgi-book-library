@@ -18,8 +18,15 @@ public class BookController {
     private BookService bookService;
 
     @GetMapping(value = "getBooks")
-    public ResponseEntity<Page<BookDTO>> getBooks(Pageable pageable) {
-        return ResponseEntity.ok(bookService.getBooks(pageable));
+    public ResponseEntity<Page<BookDTO>> getBooks(
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) String author,
+            @RequestParam(required = false) String genre,
+            @RequestParam(required = false) String year,
+            @RequestParam(required = false) String status,
+            Pageable pageable
+    ) {
+        return ResponseEntity.ok(bookService.getBooks(title, author, genre, year, status, pageable));
     }
 
     @GetMapping(value = "getBook")

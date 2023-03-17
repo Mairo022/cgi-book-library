@@ -1,11 +1,11 @@
-import { IPage, IPageRequest } from "../types/page";
+import { IFilterParams, IPage, IPageRequest } from "../types/page";
 import axios, { AxiosPromise } from "axios";
 import buildFilterParams from "./restUtil";
 import { ICheckout } from "../types/checkout";
 
 const baseUrl = `http://localhost:8080/api/checkout`
 
-function getCheckouts(filter: Partial<IPageRequest>): AxiosPromise<IPage<ICheckout>> {
+function getCheckouts(filter: Partial<IFilterParams>): AxiosPromise<IPage<ICheckout>> {
     const url = baseUrl + '/getCheckouts'
     const params = buildFilterParams(filter)
     return axios.get(url + params)

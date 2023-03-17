@@ -81,6 +81,9 @@ function BookDetail(): JSX.Element {
             if (status === book.status) {
                 return <React.Fragment key={i}/>
             }
+            if (status === "BORROWED") {
+                return <></>
+            }
 
             return (
                 <option className="book__status__select__option" value={status} key={i}>
