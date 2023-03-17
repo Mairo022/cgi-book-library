@@ -4,6 +4,7 @@ import { IBook } from "../types/book";
 import { IPage, IPageRequest, ISortDirection } from "../types/page";
 import { NavLink } from "react-router-dom";
 import "../styles/table.scss"
+import generatePages from "../utils/pagination";
 
 function BooksList(): JSX.Element {
     const [books, setBooks] = useState<IPage<IBook>>()
@@ -79,35 +80,9 @@ function BooksList(): JSX.Element {
     }
 
     function navPagesJSX(): JSX.Element {
-        const displayedPages: number = 5;
-        const pagesFromMidPoint: number = Math.floor(displayedPages/2);
-        const pageCur: number = books!.number+1;
-        const pagesTotal: number  = books!.totalPages;
-        const pages: Array<number> = []
-
-        let startPage: number, endPage: number = 0
-
-        // Less pages than the amount of displayed pages
-        if (pagesTotal <= displayedPages) {
-            startPage = 1;
-            endPage = pagesTotal;
-        // Less pages in first half
-        } else if (pageCur <= pagesFromMidPoint + 1) {
-            startPage = 1;
-            endPage = displayedPages;
-        // Less pages in second half
-        } else if (pageCur >= pagesTotal - pagesFromMidPoint) {
-            endPage = pagesTotal;
-            startPage = pagesTotal - displayedPages + 1;
-        // Equal amount of pages on both sides
-        } else {
-            startPage = pageCur - pagesFromMidPoint;
-            endPage = pageCur + pagesFromMidPoint;
-        }
-
-        for (let i = startPage; i <= endPage; i++) {
-            pages.push(i)
-        }
+        const pageCur = books!.number + 1
+        const pagesTotal = books!.totalPages
+        const pages = generatePages(pageCur, pagesTotal, 5)
 
         const pagesJSX: JSX.Element[] = pages.map((page, index) => {
             const className: string = page === pageCur ? "table__nav__pages__page table__nav__pages__page--active" : "table__nav__pages__page"
