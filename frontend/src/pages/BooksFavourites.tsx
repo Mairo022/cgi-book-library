@@ -1,5 +1,7 @@
+import BooksListFavourites from "../components/BooksListFavourites";
+
 function BooksFavourites(): JSX.Element {
-    return <></>
+    return <BooksListFavourites/>
 }
 
 export default BooksFavourites
