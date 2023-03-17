@@ -8,6 +8,7 @@ import BooksFavourites from "./pages/BooksFavourites"
 import CheckoutsPersonal from "./pages/CheckoutsPersonal";
 import Navbar from "./components/Navbar";
 import Header from "./components/Header";
+import Login from "./pages/Login";
 
 function App() {
     return (
@@ -16,6 +17,7 @@ function App() {
             <Navbar/>
             <Routes>
                 <Route path="/" element={<Books/>}/>
+                <Route path="/login" element={<Login/>}/>
 
                 <Route path="/books" element={<Books/>}/>
                 <Route path="/books/:bookId" element={<Book/>}/>
