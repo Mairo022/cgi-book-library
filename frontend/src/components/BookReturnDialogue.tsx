@@ -6,6 +6,7 @@ import { IBook, IBookStatus } from "../types/book";
 import { STATUSES } from "../utils/statuses";
 import axios from "axios";
 import { ICheckout } from "../types/checkout";
+import { toTitleCase } from "../utils/toTitleCase";
 
 function BookReturnDialogue(props: IBookReturnDialogue): JSX.Element {
     const {checkout, open, setOpen, setCheckout} = props
@@ -24,11 +25,9 @@ function BookReturnDialogue(props: IBookReturnDialogue): JSX.Element {
 
     function selectStatusJSX(): JSX.Element {
         const statuses: JSX.Element[] = STATUSES.map((status, i) => {
-            const titleCaseStatus = status.charAt(0) + status.slice(1).toLowerCase()
-
             return (
                 <option className="content__select__option" value={status} key={i}>
-                    {titleCaseStatus}
+                    {toTitleCase(status)}
                 </option>
             )
         })

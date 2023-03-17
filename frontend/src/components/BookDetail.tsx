@@ -8,6 +8,7 @@ import React from 'react';
 import { IFavouriteBooks } from "../types/contextTypes";
 import { STATUSES } from "../utils/statuses";
 import BookDeleteDialogue from "./BookDeleteDialogue";
+import { toTitleCase } from "../utils/toTitleCase";
 
 function BookDetail(): JSX.Element {
     const [book, setBook] = useState<IBook>()
@@ -55,7 +56,7 @@ function BookDetail(): JSX.Element {
         const isBookInFavourites = favouriteBooks?.includes(book.id)
 
         const selectOptions = STATUSES.map((status, i) => {
-            const statusTitleCase: string = status.charAt(0) + status.slice(1).toLowerCase()
+            const statusTitleCase: string = toTitleCase(status)
 
             // Ensures the first option is book.status
             if (i === 0) {
@@ -63,9 +64,7 @@ function BookDetail(): JSX.Element {
                     return (
                         <React.Fragment key={i}>
                             <option className="book__status__select__option" value={book.status}>
-                                {
-                                    book.status.charAt(0) + book.status.slice(1).toLowerCase()
-                                }
+                                {toTitleCase(book.status)}
                             </option>
                             <option className="book__status__select__option" value={status}>
                                 {statusTitleCase}

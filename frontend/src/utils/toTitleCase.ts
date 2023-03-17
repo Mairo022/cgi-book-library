@@ -1,0 +1,1 @@
+export const toTitleCase = (str: string): string => str.charAt(0) + str.slice(1).toLowerCase()
