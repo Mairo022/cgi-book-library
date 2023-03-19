@@ -88,6 +88,10 @@ function CheckoutsList(): JSX.Element {
 
     function checkoutsJSX(): JSX.Element[] {
         const checkoutsJSX: JSX.Element[] = checkouts!.content.map((checkout, i) => {
+            const today = new Date()
+            const dueDate = new Date(checkout.checkedOutDate)
+            const className = today > dueDate && checkout.returnedDate === null ? "table__body__row__due--late" : undefined
+
             return (
                 <tr onClick={() => { navigate(`/checkouts/${checkout.id}`) }} key={i}>
                     <td data-label="Title">{checkout.borrowedBook.title}</td>
@@ -96,7 +100,7 @@ function CheckoutsList(): JSX.Element {
                     <td data-label="First Name">{checkout.borrowerFirstName}</td>
                     <td data-label="Last Name">{checkout.borrowerLastName}</td>
                     <td data-label="Checked out">{checkout.checkedOutDate}</td>
-                    <td data-label="Due">{checkout.dueDate}</td>
+                    <td className={className} data-label="Due">{checkout.dueDate}</td>
                 </tr>
             )
         })
