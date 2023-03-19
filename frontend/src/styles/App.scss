@@ -1,0 +1,19 @@
+@import "./utils/animations";
+
+.App {
+    height: 100dvh;
+    width: 100vw;
+    overflow-x: hidden;
+    background-color: #f2f0eb;
+    padding-bottom: 50px;
+}
+
+.error_loading,
+.loading_data {
+    text-align: center;
+}
+
+.loading_data::after {
+    content: ".";
+    animation: loadingDots 1.35s infinite;
+}

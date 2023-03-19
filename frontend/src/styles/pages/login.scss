@@ -1,0 +1,31 @@
+.login {
+  padding: 30px 35px;
+  background-color: white;
+  width: fit-content;
+  margin: 0 auto;
+  border-radius: 5px;
+  box-shadow: 0 0 3px #dcdcdc;
+
+  &__reader,
+  &__librarian {
+    width: 250px;
+    display: block;
+
+    color: #fff0f0;
+    background-color: #478aff;
+    box-shadow: 0 0 3px #8bb7ff;
+    transition: 0.1s;
+    border-radius: 8px;
+
+    &:hover {
+      border-color: #6498ff;
+      background-color: #3e83fd;
+      box-shadow: 0 0 4px #5492ff;
+      transition: 0.1s;
+    }
+  }
+
+  &__reader {
+    margin-bottom: 15px;
+  }
+}

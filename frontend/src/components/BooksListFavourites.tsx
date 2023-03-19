@@ -1,13 +1,15 @@
 import { useUserDetails } from "../context/userContext";
 import { useEffect, useState } from "react";
-import { IPage, IPageRequest, ISortDirection } from "../types/page";
+import { IPageRequest, ISortDirection } from "../types/page";
 import { IBook } from "../types/book";
 import { getBook } from "../services/bookService";
-import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toTitleCase } from "../utils/toTitleCase";
 
 function BooksListFavourites(): JSX.Element {
     const {favouriteBooks} = useUserDetails()
+    const navigate = useNavigate()
 
     const [books, setBooks] = useState<IBook[]>()
     const [filter, setFilter] = useState<Partial<IPageRequest>>({sort: "title", direction: "asc"})
@@ -51,45 +53,16 @@ function BooksListFavourites(): JSX.Element {
         return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
     }
 
-    function headersJSX(): JSX.Element {
-        const headersJSX: JSX.Element = (
-            <>
-                <button onClick={() => { onSort("title") }}>
-                    Title
-                </button>
-                <button onClick={() => { onSort("author") }}>
-                    Author
-                </button>
-                <button onClick={() => { onSort("year") }}>
-                    Year
-                </button>
-                <button onClick={() => { onSort("genre") }}>
-                    Genre
-                </button>
-                <button onClick={() => { onSort("status") }}>
-                    Status
-                </button>
-            </>
-        )
-
-        return headersJSX
-    }
-
     function booksJSX(): JSX.Element[] {
-        const booksJSX: JSX.Element[] = books!.map((book, index) => {
-            return (
-                <li className="table__row" key={index}>
-                    <NavLink to={`/books/${book.id}`} className="table__row__book table__row__item">
-                        <p className="table__row__item__title">{book.title}</p>
-                        <p className="table__row__item__author">{book.author}</p>
-                        <p className="table__row__item__year">{book.year}</p>
-                        <p className="table__row__item__genre">{book.genre}</p>
-                        <p className="table__row__item__status">{book.status}</p>
-                    </NavLink>
-                </li>
+        const booksJSX: JSX.Element[] = books!.map((book, i) =>
+                <tr onClick={() => { navigate(`/books/${book.id}`) }} key={i}>
+                    <td data-label="Title">{book.title}</td>
+                    <td data-label="Author">{book.author}</td>
+                    <td data-label="Year">{book.year}</td>
+                    <td data-label="Genre">{book.genre}</td>
+                    <td data-label="Status">{toTitleCase(book.status)}</td>
+                </tr>
             )
-        })
-
         return booksJSX
     }
 
@@ -98,16 +71,32 @@ function BooksListFavourites(): JSX.Element {
     }, [favouriteBooks])
 
     return books ?
-           <article className="table books_list">
-               <header className="table__headers">
-                   {headersJSX()}
-               </header>
-               <ul className="table__rows">
-                   {booksJSX()}
-               </ul>
-               <footer className="table__footer">
-               </footer>
-           </article>
+           <div className="books__list">
+               <table className="table">
+                   <thead className="table__headers">
+                   <tr>
+                       <th className="table__headers__title" scope="col" onClick={() => { onSort("title") }}>
+                           Title
+                       </th>
+                       <th className="table__headers__author" scope="col" onClick={() => { onSort("author") }}>
+                           Author
+                       </th>
+                       <th className="table__headers__year" scope="col" onClick={() => { onSort("year") }}>
+                           Year
+                       </th>
+                       <th className="table__headers__genre" scope="col" onClick={() => { onSort("genre") }}>
+                           Genre
+                       </th>
+                       <th className="table__headers__status" scope="col" onClick={() => { onSort("status") }}>
+                           Status
+                       </th>
+                   </tr>
+                   </thead>
+                   <tbody className="table__body">
+                        {booksJSX()}
+                   </tbody>
+               </table>
+           </div>
            : dataLoadError ?
              <div className="error_loading">
                  <p className="error_loading__text">Error loading books,</p>

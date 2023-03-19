@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useUserDetails } from "../context/userContext";
 import { IRole } from "../types/contextTypes";
+import "../styles/pages/login.scss"
 
 function Login(): JSX.Element {
     const navigate = useNavigate()

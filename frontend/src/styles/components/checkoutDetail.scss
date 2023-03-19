@@ -1,0 +1,53 @@
+.checkout {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 500px;
+  background-color: white;
+  padding: 25px 30px;
+  border-radius: 5px;
+  box-shadow: 0 0 3px #dcdcdc;
+  color: #1a1916;
+
+  &__book {
+    &__title {
+      font-size: 1.1em;
+    }
+
+    &__author {
+      font-style: italic;
+    }
+  }
+
+  &__borrow {
+    margin-top: 5px;
+
+    &__header {
+      margin-bottom: -3px;
+    }
+
+    &__name_label,
+    &__checkedOut_label,
+    &__due_label {
+      margin-top: 5px;
+      border-bottom: 1px solid black;
+    }
+  }
+
+  button {
+    color: #fff0f0;
+    background-color: #478aff;
+    box-shadow: 0 0 3px #8bb7ff;
+    margin-top: 15px;
+    transition: 0.1s;
+    border-radius: 8px;
+
+    &:hover {
+      border-color: #6498ff;
+      background-color: #3e83fd;
+      box-shadow: 0 0 4px #5492ff;
+      transition: 0.1s;
+    }
+  }
+}

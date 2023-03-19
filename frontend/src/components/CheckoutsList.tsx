@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getCheckouts } from "../services/checkoutService";
 import { IPage, IPageRequest, ISortDirection } from "../types/page";
-import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ICheckout } from "../types/checkout";
 import generatePages from "../utils/pagination";
 
@@ -9,6 +9,8 @@ function CheckoutsList(): JSX.Element {
     const [checkouts, setCheckouts] = useState<IPage<ICheckout>>()
     const [filter, setFilter] = useState<Partial<IPageRequest>>({pageIndex: 0, pageSize: 5, sort: "dueDate", direction: "asc"})
     const [dataLoadError, setDataLoadError] = useState<boolean>(false)
+
+    const navigate = useNavigate()
 
     function loadCheckouts(filter: Partial<IPageRequest>): void {
         getCheckouts(filter)
@@ -36,50 +38,18 @@ function CheckoutsList(): JSX.Element {
         setFilter((filter => ({...filter, sort, direction, pageIndex: 0})))
     }
 
-    function headersJSX(): JSX.Element {
-        const headersJSX: JSX.Element = (
-            <>
-                <button onClick={() => { handleSorting("borrowedBook") }}>
-                    Title
-                </button>
-                <button onClick={() => { handleSorting("borrowedBookAuthor") }}>
-                    Author
-                </button>
-                <button onClick={() => { handleSorting("borrowedBookYear") }}>
-                    Year
-                </button>
-                <button onClick={() => { handleSorting("borrowerFirstName") }}>
-                    First name
-                </button>
-                <button onClick={() => { handleSorting("borrowerLastName") }}>
-                    Last name
-                </button>
-                <button onClick={() => { handleSorting("checkedOutDate") }}>
-                    Checked out
-                </button>
-                <button onClick={() => { handleSorting("dueDate") }}>
-                    Due
-                </button>
-            </>
-        )
-
-        return headersJSX
-    }
-
     function checkoutsJSX(): JSX.Element[] {
-        const checkoutsJSX: JSX.Element[] = checkouts!.content.map((checkout, index) => {
+        const checkoutsJSX: JSX.Element[] = checkouts!.content.map((checkout, i) => {
             return (
-                <li className="table__row" key={index}>
-                    <NavLink to={checkout.id} className="table__row__item">
-                        <p className="table__row__item__title">{checkout.borrowedBook.title}</p>
-                        <p className="table__row__item__author">{checkout.borrowedBook.author}</p>
-                        <p className="table__row__item__year">{checkout.borrowedBook.year}</p>
-                        <p className="table__row__item__firstname">{checkout.borrowerFirstName}</p>
-                        <p className="table__row__item__lastname">{checkout.borrowerLastName}</p>
-                        <p className="table__row__item__checkedOut">{checkout.checkedOutDate}</p>
-                        <p className="table__row__item__dueDate">{checkout.dueDate}</p>
-                    </NavLink>
-                </li>
+                <tr onClick={() => { navigate(`/checkouts/${checkout.id}`) }} key={i}>
+                    <td data-label="Title">{checkout.borrowedBook.title}</td>
+                    <td data-label="Author">{checkout.borrowedBook.author}</td>
+                    <td data-label="Year">{checkout.borrowedBook.year}</td>
+                    <td data-label="First Name">{checkout.borrowerFirstName}</td>
+                    <td data-label="Last Name">{checkout.borrowerLastName}</td>
+                    <td data-label="Checked out">{checkout.checkedOutDate}</td>
+                    <td data-label="Due">{checkout.dueDate}</td>
+                </tr>
             )
         })
         return checkoutsJSX
@@ -126,17 +96,41 @@ function CheckoutsList(): JSX.Element {
     }, [filter])
 
     return checkouts && checkouts.content ?
-           <article className="table checkouts">
-               <header className="table__headers">
-                   {headersJSX()}
-               </header>
-               <ul className="table__rows">
-                   {checkoutsJSX()}
-               </ul>
-               <nav className="table__nav">
+           <div className="checkouts__list">
+               <table className="table">
+                   <thead className="table__headers">
+                   <tr>
+                       <th className="table__headers__title" scope="col" onClick={() => { handleSorting("borrowedBook") }}>
+                           Title
+                       </th>
+                       <th className="table__headers__author" scope="col" onClick={() => { handleSorting("borrowedBookAuthor") }}>
+                           Author
+                       </th>
+                       <th className="table__headers__year" scope="col" onClick={() => { handleSorting("borrowedBookYear") }}>
+                           Year
+                       </th>
+                       <th className="table__headers__fname" scope="col" onClick={() => { handleSorting("borrowedBookFirstName") }}>
+                           First name
+                       </th>
+                       <th className="table__headers__lname" scope="col" onClick={() => { handleSorting("borrowedBookLastName") }}>
+                           Last name
+                       </th>
+                       <th className="table__headers__checkedOut" scope="col" onClick={() => { handleSorting("checkedOutDate") }}>
+                           Checked out
+                       </th>
+                       <th className="table__headers__due" scope="col" onClick={() => { handleSorting("dueDate") }}>
+                           Due
+                       </th>
+                   </tr>
+                   </thead>
+                   <tbody className="table__body">
+                        {checkoutsJSX()}
+                   </tbody>
+               </table>
+               <nav className="table_nav">
                    {navPages()}
                </nav>
-           </article>
+           </div>
            : dataLoadError ?
              <div className="error_loading">
                  <p className="error_loading__text">Error loading books,</p>

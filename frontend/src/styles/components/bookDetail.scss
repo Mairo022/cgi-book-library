@@ -1,0 +1,63 @@
+.book {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 500px;
+  background-color: white;
+  padding: 25px 30px;
+  border-radius: 5px;
+  box-shadow: 0 0 3px #dcdcdc;
+  color: #1a1916;
+
+  &__title {
+    font-size: 1.1em;
+  }
+
+  &__author {
+    font-style: italic;
+  }
+
+  &__status {
+    &__select {
+      border-radius: 8px;
+      color: #1a1916;
+      font-size: 0.95em;
+      border: none;
+      padding: 4px 15px 4px 15px;
+      background-color: #eee;
+      outline: none;
+      width: 130px;
+      text-align-last: center;
+
+      &::selection {
+        background-color: red;
+      }
+
+      &__option {
+        outline: none;
+        border: none;
+        border-radius: 15px;
+        &:checked {
+          background-color: #ddd;
+        }
+      }
+    }
+  }
+
+  button {
+    color: #fff0f0;
+    background-color: #478aff;
+    box-shadow: 0 0 3px #8bb7ff;
+    margin-top: 15px;
+    transition: 0.1s;
+    border-radius: 8px;
+
+    &:hover {
+      border-color: #6498ff;
+      background-color: #3e83fd;
+      box-shadow: 0 0 4px #5492ff;
+      transition: 0.1s;
+    }
+  }
+}

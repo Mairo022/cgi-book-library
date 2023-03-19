@@ -1,0 +1,65 @@
+.book_checkout_dialogue {
+  .content {
+    text-align: center;
+  }
+
+  .form {
+    padding-top: 0;
+
+    &__label,
+    &__input {
+      width: 100%;
+      display: block;
+    }
+
+    &__input {
+      padding: 8px 10px;
+      font-size: 0.95em;
+      margin-bottom: 10px;
+    }
+
+    &__submit,
+    &__cancel {
+      border-radius: 5px;
+      display: inline-block;
+      margin-bottom: 22px;
+    }
+
+    &__submit {
+      background-color: #69bd4e;
+      float: left;
+
+      &:hover {
+        background-color: #6fc953;
+        box-shadow: 0 0 3px #55e029;
+      }
+    }
+
+    &__cancel {
+      float: right;
+      background-color: #f35757;
+
+      &:hover {
+        background-color: #fa6262;
+        box-shadow: 0 0 3px #f13333;
+      }
+    }
+  }
+
+  .options {
+    text-align: center;
+
+    &__yes,
+    &__no {
+      padding: 10px 35px;
+    }
+
+    &__yes {
+      margin-right: 7px;
+    }
+
+    &__no {
+      margin-left: 7px;
+    }
+  }
+}

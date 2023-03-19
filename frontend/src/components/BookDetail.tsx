@@ -1,6 +1,6 @@
 import { useLocation } from 'react-router-dom';
 import { ChangeEvent, useEffect, useState } from "react";
-import { deleteBook, getBook, saveBook } from "../services/bookService";
+import { getBook, saveBook } from "../services/bookService";
 import { IBook, IBookStatus } from "../types/book";
 import BookCheckoutDialogue from "./BookCheckoutDialogue";
 import { useUserDetails } from "../context/userContext";
@@ -9,6 +9,7 @@ import { IFavouriteBooks } from "../types/contextTypes";
 import { STATUSES } from "../utils/statuses";
 import BookDeleteDialogue from "./BookDeleteDialogue";
 import { toTitleCase } from "../utils/toTitleCase";
+import "../styles/components/bookDetail.scss"
 
 function BookDetail(): JSX.Element {
     const [book, setBook] = useState<IBook>()

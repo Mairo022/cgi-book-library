@@ -3,11 +3,11 @@ import { ICheckout } from "../types/checkout";
 import { useLocation } from "react-router-dom";
 import { getCheckout, saveCheckout } from "../services/checkoutService";
 import { useUserDetails } from "../context/userContext";
-import BookCheckoutDialogue from "./BookCheckoutDialogue";
 import BookReturnDialogue from "./BookReturnDialogue";
 import { saveBook } from "../services/bookService";
 import { IBook, IBookStatus } from "../types/book";
 import axios from "axios";
+import "../styles/components/checkoutDetail.scss"
 
 function CheckoutDetail(): JSX.Element {
     const [checkout, setCheckout] = useState<ICheckout>()
@@ -55,15 +55,15 @@ function CheckoutDetail(): JSX.Element {
         return (
             <section className="checkout">
                 <div className="checkout__book">
-                    <h4 className="checkout__title">{checkout.borrowedBook.title}</h4>
-                    <p className="checkout__author">by {checkout.borrowedBook.author}</p>
-                    <p className="checkout__genre">Genre: {checkout.borrowedBook.genre}</p>
-                    <p className="checkout__year">Released: {checkout.borrowedBook.year}</p>
+                    <h4 className="checkout__book__title">{checkout.borrowedBook.title}</h4>
+                    <p className="checkout__book__author">by {checkout.borrowedBook.author}</p>
+                    <p className="checkout__book__genre">Genre: {checkout.borrowedBook.genre}</p>
+                    <p className="checkout__book__year">Released: {checkout.borrowedBook.year}</p>
                 </div>
                 <div className="checkout__borrow">
-                    <p className="checkout__borrow__firstname_label">Name</p>
-                    <p className="checkout__borrow__firstname">{checkout.borrowerFirstName}</p>
-                    <p className="checkout__borrow__lastname">{checkout.borrowerLastName}</p>
+                    <h4 className="checkout__borrow__header">Borrower details</h4>
+                    <p className="checkout__borrow__name_label">Name</p>
+                    <p className="checkout__borrow__name">{checkout.borrowerFirstName} {checkout.borrowerLastName}</p>
                     <p className="checkout__borrow__checkedOut_label">Checked out</p>
                     <p className="checkout__borrow__checkedOut">{checkout.checkedOutDate}</p>
                     <p className="checkout__borrow__due_label">Due</p>

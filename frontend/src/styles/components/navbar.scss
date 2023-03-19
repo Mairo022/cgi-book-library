@@ -1,13 +1,13 @@
 .nav {
-  text-align: center;
-  padding: 5px 0;
+  display: flex;
+  padding: 0 0 12px;
+  margin: 0 auto 50px;
+  width: fit-content;
+  border-bottom: 1px solid black;
 
   &__item {
-    display: inline-block;
-    padding: 5px 15px;
-    margin: 0;
+    padding: 0 15px;
     font-size: 1.1em;
-    border-radius: 5px;
 
     &:hover {
       color: rgb(68, 68, 68);

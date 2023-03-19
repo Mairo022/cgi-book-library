@@ -1,7 +1,9 @@
+import "../styles/components/header.scss"
+
 function Header(): JSX.Element {
     return (
-        <header className="header">
-            <h1 className="header__title">CGI Library</h1>
+        <header className="site_header">
+            <h1 className="site_header__title">CGI Library</h1>
         </header>
     )
 }

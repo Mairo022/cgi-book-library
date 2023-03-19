@@ -1,7 +1,7 @@
 import { ICheckout } from "../types/checkout";
 import { saveCheckout } from "../services/checkoutService";
 import {v4 as uuidv4} from 'uuid';
-import "../styles/components/BookCheckoutDialogue.scss"
+import "../styles/components/bookCheckoutDialogue.scss"
 import { useUserDetails } from "../context/userContext";
 import { IBookCheckoutDialogue, IUserData } from "../types/bookCheckoutDialogue";
 import { SyntheticEvent, useState } from "react";
@@ -64,11 +64,12 @@ function BookCheckoutDialogue(props: IBookCheckoutDialogue): JSX.Element {
         return (
             <dialog className="book_checkout_dialogue dialogue" open={open} modal="false" role="dialog">
                 <header className="header">
-                    <h2 className="header__title">Book Checkout</h2>
+                    <h3 className="header__title">Book Checkout</h3>
                 </header>
                 <article className="content">
                     <p className="content__title">{book.title}</p>
                     <p className="content__author">by {book.author}</p>
+                    <p className="content__year">{book.year}</p>
                 </article>
                 <form className="form" onSubmit={(e) => { onSubmit(e) }}>
                     <label className="form__label" htmlFor="firstname">First name</label>

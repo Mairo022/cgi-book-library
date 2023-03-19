@@ -7,6 +7,7 @@ import { STATUSES } from "../utils/statuses";
 import axios from "axios";
 import { ICheckout } from "../types/checkout";
 import { toTitleCase } from "../utils/toTitleCase";
+import "../styles/components/bookReturnDialogue.scss"
 
 function BookReturnDialogue(props: IBookReturnDialogue): JSX.Element {
     const {checkout, open, setOpen, setCheckout} = props
@@ -41,16 +42,17 @@ function BookReturnDialogue(props: IBookReturnDialogue): JSX.Element {
     return (
         <dialog className="book_return_dialogue dialogue" open={open} modal="false" role="dialog">
             <header className="header">
-                <h2 className="header__title">Returning Book</h2>
+                <h4 className="header__title">Returning Book</h4>
             </header>
             <article className="content">
                 <p className="content__title">{checkout.borrowedBook.title}</p>
                 <p className="content__author">by {checkout.borrowedBook.author}</p>
+                <p className="content__year">{checkout.borrowedBook.year}</p>
                 {selectStatusJSX()}
             </article>
             <div className="options">
-                <button className="options__save" onClick={() => { onSave() }}>Save</button>
-                <button className="options__cancel" onClick={() => { setOpen(false) }}>Cancel</button>
+                <button className="options__yes" onClick={() => { onSave() }}>Save</button>
+                <button className="options__no" onClick={() => { setOpen(false) }}>Cancel</button>
             </div>
         </dialog>
     )

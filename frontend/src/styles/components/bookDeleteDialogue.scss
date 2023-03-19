@@ -1,0 +1,18 @@
+.book_return_dialogue {
+  .options {
+      text-align: center;
+
+    &__yes,
+    &__no {
+      padding: 10px 35px;
+    }
+
+    &__yes {
+      margin-right: 7px;
+    }
+
+    &__no {
+      margin-left: 7px;
+    }
+  }
+}
