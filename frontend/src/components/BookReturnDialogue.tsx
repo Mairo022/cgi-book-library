@@ -14,7 +14,9 @@ function BookReturnDialogue(props: IBookReturnDialogue): JSX.Element {
     const [status, setStatus] = useState<IBookStatus>("RETURNED")
 
     function onSave(): void {
-        const checkoutData: ICheckout = {...checkout, returnedDate: new Date().toLocaleDateString("sv-SE")}
+        const returnedDate = status === "BORROWED" ? null : new Date().toLocaleDateString("sv-SE")
+
+        const checkoutData: ICheckout = {...checkout, returnedDate: returnedDate}
         const bookData: IBook = {...checkout.borrowedBook, status}
 
         axios.all([saveBook(bookData), saveCheckout(checkoutData)])
