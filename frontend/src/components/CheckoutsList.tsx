@@ -109,10 +109,10 @@ function CheckoutsList(): JSX.Element {
                        <th className="table__headers__year" scope="col" onClick={() => { handleSorting("borrowedBookYear") }}>
                            Year
                        </th>
-                       <th className="table__headers__fname" scope="col" onClick={() => { handleSorting("borrowedBookFirstName") }}>
+                       <th className="table__headers__fname" scope="col" onClick={() => { handleSorting("borrowerFirstName") }}>
                            First name
                        </th>
-                       <th className="table__headers__lname" scope="col" onClick={() => { handleSorting("borrowedBookLastName") }}>
+                       <th className="table__headers__lname" scope="col" onClick={() => { handleSorting("borrowerLastName") }}>
                            Last name
                        </th>
                        <th className="table__headers__checkedOut" scope="col" onClick={() => { handleSorting("checkedOutDate") }}>
