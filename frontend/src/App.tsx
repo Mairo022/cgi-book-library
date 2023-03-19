@@ -26,7 +26,7 @@ function App() {
                 <Route path="/checkouts" element={<Checkouts/>}/>
                 <Route path="/checkouts/:checkoutId" element={<Checkout/>}/>
 
-                <Route path="*" element={<p>Not found</p>}/>
+                <Route path="*" element={<p className="error_loading">Not found</p>}/>
             </Routes>
         </div>
     )
