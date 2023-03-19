@@ -113,7 +113,7 @@ function CheckoutsList(): JSX.Element {
         const pages = generatePages(pageCur, pagesTotal, 5)
 
         const pagesJSX: JSX.Element[] = pages.map((page, index) => {
-            const className: string = page === pageCur ? "table__nav__pages__page table__nav__pages__page--active" : "table__nav__pages__page"
+            const className: string = page === pageCur ? "table_nav__page table_nav__page--active" : "table_nav__page"
 
             return (
                 <button className={className} key={index} onClick={() => { handlePaging(page-1) }}>
@@ -124,17 +124,17 @@ function CheckoutsList(): JSX.Element {
 
         const navJSX: JSX.Element = (
             <>
-                <button className="table__nav__first" onClick={() => { handlePaging(0) }}>
+                <button className="table_nav__page_btn" onClick={() => { handlePaging(0) }}>
                     <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M18.41 16.59L13.82 12l4.59-4.59L17 6l-6 6 6 6zM6 6h2v12H6z"/><path d="M24 24H0V0h24v24z" fill="none"/></svg>
                 </button>
-                <button className="table__nav__previous" onClick={() => { handlePaging(pageCur-2) }}>
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
-                </button>
-                {pagesJSX}
-                <button className="table__nav__next" onClick={() => { handlePaging(pageCur) }}>
+                <button className="table_nav__page_btn" onClick={() => { handlePaging(pageCur-2) }}>
                     <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
                 </button>
-                <button className="table__nav__last" onClick={() => { handlePaging(pagesTotal-1) }}>
+                {pagesJSX}
+                <button className="table_nav__page_btn" onClick={() => { handlePaging(pageCur) }}>
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                </button>
+                <button className="table_nav__page_btn" onClick={() => { handlePaging(pagesTotal-1) }}>
                     <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M5.59 7.41L10.18 12l-4.59 4.59L7 18l6-6-6-6zM16 6h2v12h-2z"/></svg>
                 </button>
             </>
