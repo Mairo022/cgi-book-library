@@ -84,6 +84,10 @@
       display: inline-block;
       margin-right: 10px;
 
+      &__late {
+        text-align: center;
+      }
+
       &__year,
       &__year > * {
         width: 100px;

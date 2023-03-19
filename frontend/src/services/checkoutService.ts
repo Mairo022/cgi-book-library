@@ -1,4 +1,4 @@
-import { IFilterParams, IPage, IPageRequest } from "../types/page";
+import { IFilterParams, IPage } from "../types/page";
 import axios, { AxiosPromise } from "axios";
 import buildFilterParams from "./restUtil";
 import { ICheckout } from "../types/checkout";

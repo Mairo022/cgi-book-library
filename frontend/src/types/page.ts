@@ -1,7 +1,7 @@
 import { IBookStatus } from "./book";
 
 export type ISortDirection = 'asc' | 'desc' | '';
-export type IParameters = "page" | "size" | "sort" | "author" | "year" | "title" | "genre" | "status"
+export type IParameters = "page" | "size" | "sort" | "author" | "year" | "title" | "genre" | "status" | "late" | "borrowerFirstName" | "borrowerLastName"
 
 /**
  * Page as returned from spring pageable endpoints.
@@ -29,4 +29,7 @@ export interface IFilterParams extends IPageRequest {
     year: number
     genre: string
     status: IBookStatus | ""
+    borrowerFirstName: string
+    borrowerLastName: string
+    late: boolean
 }

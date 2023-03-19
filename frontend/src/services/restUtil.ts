@@ -1,7 +1,7 @@
 import { IFilterParams, IParameters } from "../types/page";
 
 function buildFilterParams(filter: Partial<IFilterParams>): string {
-    const {pageIndex, pageSize, sort, direction, title, author, genre, year, status} = filter
+    const {pageIndex, pageSize, sort, direction, title, author, genre, year, status, borrowerFirstName, borrowerLastName, late} = filter
     const paramsMap = new Map<IParameters, string>()
     let params = ""
 
@@ -29,6 +29,16 @@ function buildFilterParams(filter: Partial<IFilterParams>): string {
     if (status != null && status !== "") {
         paramsMap.set("status", String(status))
     }
+    if (borrowerFirstName != null && borrowerFirstName !== "") {
+        paramsMap.set("borrowerFirstName", String(borrowerFirstName))
+    }
+    if (borrowerLastName != null && borrowerLastName !== "") {
+        paramsMap.set("borrowerLastName", String(borrowerLastName))
+    }
+    if (late === true) {
+        paramsMap.set("late", String(late))
+    }
+
 
     paramsMap.forEach((value, key) => {
         if (params === "") {

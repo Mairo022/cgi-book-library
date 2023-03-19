@@ -1,21 +1,30 @@
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { getCheckouts } from "../services/checkoutService";
-import { IPage, IPageRequest, ISortDirection } from "../types/page";
+import { IFilterParams, IPage, IPageRequest, ISortDirection } from "../types/page";
 import { useNavigate } from "react-router-dom";
 import { ICheckout } from "../types/checkout";
 import generatePages from "../utils/pagination";
 
 function CheckoutsList(): JSX.Element {
     const [checkouts, setCheckouts] = useState<IPage<ICheckout>>()
-    const [filter, setFilter] = useState<Partial<IPageRequest>>({pageIndex: 0, pageSize: 5, sort: "dueDate", direction: "asc"})
+    const [filter, setFilter] = useState<Partial<IFilterParams>>({pageIndex: 0, pageSize: 5, sort: "dueDate", direction: "asc"})
     const [dataLoadError, setDataLoadError] = useState<boolean>(false)
 
     const navigate = useNavigate()
+
+    const [title, setTitle] = useState<string>("")
+    const [author, setAuthor] = useState<string>("")
+    const [year, setYear] = useState<number>()
+    const [firstname, setFirstname] = useState<string>("")
+    const [lastname, setLastname] = useState<string>("")
+    const [late, setLate] = useState<boolean>(false)
+
 
     function loadCheckouts(filter: Partial<IPageRequest>): void {
         getCheckouts(filter)
             .then(r => {
                 setCheckouts(r.data)
+                console.log(r.data)
             })
             .catch(() => {
                 setDataLoadError(true)
@@ -36,6 +45,45 @@ function CheckoutsList(): JSX.Element {
             }
         }
         setFilter((filter => ({...filter, sort, direction, pageIndex: 0})))
+    }
+
+    function onSearchSubmit(e: FormEvent<HTMLFormElement>): void {
+        e.preventDefault()
+        setFilter({...filter, pageIndex: 0, title, author, year, borrowerFirstName: firstname, borrowerLastName: lastname, late})
+    }
+
+    function searchJSX(): JSX.Element {
+        return (
+            <>
+                <form className="table_search__form" onSubmit={onSearchSubmit}>
+                    <div className="table_search__form__field">
+                        <label htmlFor="title">Title</label>
+                        <input type="text" value={title} name="title" onChange={e => {setTitle(e.target.value)}}/>
+                    </div>
+                    <div className="table_search__form__field">
+                        <label htmlFor="author">Author</label>
+                        <input type="text" value={author} name="author" onChange={e => {setAuthor(e.target.value)}}/>
+                    </div>
+                    <div className="table_search__form__field table_search__form__field__year">
+                        <label htmlFor="year">Year</label>
+                        <input type="number" value={String(year)} name="year" onChange={e => {setYear(parseInt(e.target.value))}}/>
+                    </div>
+                    <div className="table_search__form__field">
+                        <label htmlFor="fname">First Name</label>
+                        <input type="text" value={firstname} name="fname" onChange={e => {setFirstname(e.target.value)}}/>
+                    </div>
+                    <div className="table_search__form__field">
+                        <label htmlFor="lname">Last Name</label>
+                        <input type="text" value={lastname} name="lname" onChange={e => {setLastname(e.target.value)}}/>
+                    </div>
+                    <div className="table_search__form__field table_search__form__field__late">
+                        <label htmlFor="late">Late</label>
+                        <input type="checkbox" name="late" onChange={() => {setLate(state => !state)}}/>
+                    </div>
+                    <button className="table_search__form__submit" type="submit">Search</button>
+                </form>
+            </>
+        )
     }
 
     function checkoutsJSX(): JSX.Element[] {
@@ -97,6 +145,9 @@ function CheckoutsList(): JSX.Element {
 
     return checkouts && checkouts.content ?
            <div className="checkouts__list">
+               <div className="table_search">
+                   {searchJSX()}
+               </div>
                <table className="table">
                    <thead className="table__headers">
                    <tr>
