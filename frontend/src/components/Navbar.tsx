@@ -23,7 +23,6 @@ function Navbar(): JSX.Element {
                 <nav className="nav">
                     <NavLink className="nav__item" to="/books">Books</NavLink>
                     <NavLink className="nav__item" to="/books/favourites">My Books</NavLink>
-                    <NavLink className="nav__item" to="/checkouts/my-checkouts">My Checkouts</NavLink>
                     <button className="nav__item nav__btn" onClick={() => {logOut()}}>Logout</button>
                 </nav>
             )
