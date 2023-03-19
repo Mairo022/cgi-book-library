@@ -91,7 +91,7 @@ function CheckoutDetail(): JSX.Element {
                }
                {checkoutJSX()}
            </>
-           : <p className="loading">Loading</p>
+           : <p className="loading_data">Loading</p>
 }
 
 export default CheckoutDetail

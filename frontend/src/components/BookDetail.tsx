@@ -144,7 +144,7 @@ function BookDetail(): JSX.Element {
                <BookCheckoutDialogue book={book} open={showCheckoutDialogue} setOpen={setShowCheckoutDialogue}/>
                {bookJSX()}
             </>
-           : <p className="loading">Loading</p>
+           : <p className="loading_data">Loading</p>
 }
 
 export default BookDetail
